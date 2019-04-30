@@ -25,3 +25,27 @@ Print a message:
 The list of numbers should be print out one per line in lexicographic order with no duplicates.
 """
 
+#   build a set of everyone who texts or receives calls
+#   for each number making a call:
+#       if it is not in the set of non marketers
+#           add it to the marketers set
+#
+#   Could do this with set operations
+#       marketers = callers - receivers union texters
+
+callers = set()
+receivers = set()
+texters = set()
+
+for source, dest, time in texts:
+    texters.add(source)
+    texters.add(dest)
+
+for source, dest, time, duration in calls:
+    callers.add(source)
+    receivers.add(dest)
+
+marketers = callers - (texters | receivers)
+print("These numbers could be telemarketers:")
+for number in sorted(marketers):
+    print(number)

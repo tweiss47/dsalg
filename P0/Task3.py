@@ -43,3 +43,44 @@ Print the answer as a part of a message::
 to other fixed lines in Bangalore."
 The percentage should have 2 decimal digits
 """
+
+# Part A
+#   loop through the calls
+#   if the source is Bangalore
+#       extract the prefix
+#       add it to a set
+#
+# Part B
+#   -- if we keep track of the count of the number of time called in Part A
+#   then we can just compute Part B directly
+
+def get_prefix_code(number):
+    '''Extract the prefix from the phone number according to the rules above'''
+    assert(len(number) > 1)
+    if number[0] == '(':
+        assert(number[1] == '0')
+        return number[1:].split(')')[0]
+    elif number[0] == '1':
+        assert(number[1] == '4' and number[2] == '0')
+        return number[0:3]
+    else:
+        assert(number[0] == '7' or number[0] == '8' or number[0] == '9')
+        return number[0:4]
+
+calls_from_bangalore = 0
+calls_to_bangalore = 0
+dest_prefixes = set()
+for source, dest, time, duration in calls:
+    source_prefix = get_prefix_code(source)
+    if source_prefix == '080':
+        dest_prefix = get_prefix_code(dest)
+        dest_prefixes.add(dest_prefix)
+        calls_from_bangalore += 1
+        if dest_prefix == '080':
+            calls_to_bangalore += 1
+
+print("The numbers called by people in Bangalore have codes:")
+print(dest_prefixes)
+
+percentage_within_bangalore = calls_to_bangalore / calls_from_bangalore * 100
+print(percentage_within_bangalore, "percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.")

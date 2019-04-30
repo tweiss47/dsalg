@@ -1,0 +1,50 @@
+Runtime analysis for text and call data tasks.
+
+Task 0: Print out the first call and the last text.
+
+This should run in O(1) time. A python list is an indexed sequnce that
+provides constant time access to any element.
+
+
+Task 1: Counting the distinct phone numbers.
+
+This should run in O(n + m) time. To track the numbers I used a set. The
+amortized cost of inserting and lookup in a set should be O(1). So the task
+consists of looping through each list (where there are n callers and m
+texters), which is O(n + m) and inserting source and destination values into
+the set.
+
+
+Task 2: Determine which number took the longest on the phone.
+
+This should run in O(n) time. To track the intermediate amount of time for each
+number I used a dict to map the number to the subtotal duration. So the task
+consisted of looping through the calls list and updating the map value (get/set)
+for the new duration.
+
+
+Task 3: Determine which prefixes were called from Bangalore and the
+percentage of those calls that were to numbers in Bangalore
+
+This should run in O(nlogn) time. The first part of the task is building a
+list of the prefixes called by numbers in Bangalore. This used a set for
+constant lookup insertion times. It requires looping through the calls list
+O(n). The second part is outputing the sorted result. This requires sorting
+the values in the set which is O(klogk) where k is the number of elements in
+the set. In the worst case every call was to a unique prefix so k could be
+equal to n.
+
+Computing the percentage takes O(1) time since the counts are tracked during
+the first part of the task and don't vary with input size.
+
+
+Task 4: Identify potential telemarketers
+
+This task built multiple sets from the text and call data. Adding the items to
+the sets would be O(n + m), where n is the number of calls and m the number of
+texts. Then the union of texters and receivers is computed which would O(n + m)
+again as both sets have to be iterated. The number of distinct numbers in a
+file could be as large as 2 * the number of lines. Then the set difference
+with the number of callers is computed. This will be O(n) as the caller set
+has to be iterated and tested for membership in the second set.
+

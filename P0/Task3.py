@@ -59,7 +59,7 @@ def get_prefix_code(number):
     assert(len(number) > 1)
     if number[0] == '(':
         assert(number[1] == '0')
-        return number[1:].split(')')[0]
+        return number[1:number.find(')')]
     elif number[0] == '1':
         assert(number[1] == '4' and number[2] == '0')
         return number[0:3]

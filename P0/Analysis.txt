@@ -20,7 +20,9 @@ Task 2: Determine which number took the longest on the phone.
 This should run in O(n) time. To track the intermediate amount of time for each
 number I used a dict to map the number to the subtotal duration. So the task
 consisted of looping through the calls list and updating the map value (get/set)
-for the new duration.
+for the new duration. The maximum time is retrieve from the list using the max()
+function which will need to iterate the keys so should run O(n). And a final
+lookup which is O(1).
 
 
 Task 3: Determine which prefixes were called from Bangalore and the
@@ -47,4 +49,8 @@ again as both sets have to be iterated. The number of distinct numbers in a
 file could be as large as 2 * the number of lines. Then the set difference
 with the number of callers is computed. This will be O(n) as the caller set
 has to be iterated and tested for membership in the second set.
+
+However, the final output needs to sorted. The order of this operation would be
+O(nlogn). In the worst case everybody initiating a call could be a telemarketer
+so the final list might be as large as n.
 

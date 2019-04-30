@@ -22,25 +22,20 @@ September 2016.".
 
 # * All the phone calls are during September
 # * Need to keep track of the caller and the callee time for each number
-# * Need to keep track of the largest value and number. It is either the
-#   current largest or one of the ones just updated
-longest = 0
-longest_number = ""
-number_map = {}
+# * Lookup the longest time at the end since the overall runtime won't be
+#   impacted and it is much simpler
 
-def update_duration(number, duration):
-    '''Update the number map and longest, longest_number for the current call.'''
-    global longest, longest_number, number_map
+number_map = {}
+def update_durations(number_map, number, duration):
     last_duration = number_map.get(number, 0)
-    new_duration = last_duration + duration
-    number_map[number] = new_duration
-    if new_duration > longest:
-        longest = new_duration
-        longest_number = number
+    number_map[number] = last_duration + duration
 
 for source, dest, time, duration in calls:
-    update_duration(source, int(duration))
-    update_duration(dest, int(duration))
+    update_durations(number_map, source, int(duration))
+    update_durations(number_map, dest, int(duration))
+
+longest_number = max(number_map.keys(), key=(lambda k: number_map[k]))
+longest = number_map[longest_number]
 
 print(longest_number, "spent the longest time,", longest, "seconds, on the phone during September 2016.")
 

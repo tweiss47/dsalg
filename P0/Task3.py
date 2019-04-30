@@ -80,7 +80,8 @@ for source, dest, time, duration in calls:
             calls_to_bangalore += 1
 
 print("The numbers called by people in Bangalore have codes:")
-print(dest_prefixes)
+for prefix in sorted(dest_prefixes):
+    print("", prefix)
 
 percentage_within_bangalore = calls_to_bangalore / calls_from_bangalore * 100
 print(percentage_within_bangalore, "percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.")

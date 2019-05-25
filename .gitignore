@@ -1,2 +1,6 @@
 # Jupyter Notebook
 .ipynb_checkpoints
+
+# Python temporaries
+__pycache__
+

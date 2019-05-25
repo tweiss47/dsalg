@@ -100,21 +100,19 @@ class DList:
 
 
 if __name__ == '__main__':
+    print ('Testing DList')
     # create and print a node
     node = DNode(1)
-    print(node)
     assert str(node) == 'Node(1)'
 
     # start with an empty list and add 3 nodes
     ll = DList()
-    print(ll)
     assert str(ll) == '[]'
     ll.insert_head(node)
     assert ll.head == node
     assert ll.tail == node
     assert node.next is None
     assert node.prev is None
-    print(ll)
     assert str(ll) == '[Node(1)]'
 
     node2 = DNode(2)
@@ -123,7 +121,6 @@ if __name__ == '__main__':
     assert ll.tail == node
     assert node.next is None
     assert node.prev is node2
-    print(ll)
     assert str(ll) == '[Node(2), Node(1)]'
 
     node3 = DNode(3)
@@ -136,26 +133,21 @@ if __name__ == '__main__':
     assert node2.prev is node3
     assert node3.next is node2
     assert node3.prev is None
-    print(ll)
     assert str(ll) == '[Node(3), Node(2), Node(1)]'
 
     # remove tail nodes until the list is empty
     removed = ll.remove_tail()
-    print(removed)
     assert removed == node
     assert removed.next is None
     assert removed.prev is None
-    print(ll)
     assert str(ll) == '[Node(3), Node(2)]'
     assert ll.tail == node2
     assert ll.tail.next is None
 
     removed = ll.remove_tail()
-    print(removed)
     assert removed == node2
     assert removed.next is None
     assert removed.prev is None
-    print(ll)
     assert str(ll) == '[Node(3)]'
     assert ll.tail == node3
     assert ll.tail.next is None
@@ -163,11 +155,9 @@ if __name__ == '__main__':
     assert ll.head.next is None
 
     removed = ll.remove_tail()
-    print(removed)
     assert removed == node3
     assert removed.next is None
     assert removed.prev is None
-    print(ll)
     assert str(ll) == '[]'
     assert ll.tail is None
     assert ll.head is None
@@ -180,7 +170,6 @@ if __name__ == '__main__':
     ll.insert_head(node)
     ll.insert_head(node2)
     ll.insert_head(node3)
-    print(ll)
     assert str(ll) == '[Node(3), Node(2), Node(1)]'
 
     # remove the middle
@@ -191,7 +180,6 @@ if __name__ == '__main__':
     assert node3.next == node
     assert ll.tail == node
     assert node.prev == node3
-    print(ll)
     assert str(ll) == '[Node(3), Node(1)]'
 
     # remove the head
@@ -202,7 +190,6 @@ if __name__ == '__main__':
     assert node.next is None
     assert ll.tail == node
     assert node.prev is None
-    print(ll)
     assert str(ll) == '[Node(1)]'
 
     # remove the tail
@@ -211,5 +198,7 @@ if __name__ == '__main__':
     assert node.prev is None
     assert ll.head is None
     assert ll.tail is None
-    print(ll)
     assert str(ll) == '[]'
+
+    # The end
+    print('All tests pass!')

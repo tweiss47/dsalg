@@ -1,5 +1,4 @@
 import sys
-import bisect
 import heapq
 
 
@@ -113,22 +112,24 @@ def build_tree(frequency_map):
     codes for the more frequent letters. (This is the heart of the
     algorithm.)
     '''
-    tuples = sorted([HuffNode(value, key) for key, value in frequency_map.items()])
+    # Use character frequencies to build a heap of HuffNodes
+    nodes = []
+    for key, value in frequency_map.items():
+        heapq.heappush(nodes, HuffNode(value, key))
 
-    while (len(tuples) > 1):
-        # pull two nodes off the front of the list
-        left = tuples.pop(0)
-        right = tuples.pop(0)
+    while (len(nodes) > 1):
+        # pull two nodes off the front of the heap
+        left = heapq.heappop(nodes)
+        right = heapq.heappop(nodes)
 
-        # create a new node with a count value equal to the sum of the two nodes
-        root = HuffNode(left.count + right.count)
-        root.left = left
-        root.right = right
+        # create a new node with a value equal to the sum of the popped nodes
+        node = HuffNode(left.count + right.count)
+        node.left = left
+        node.right = right
 
-        # insert the root into the tuple list
-        index = bisect.bisect(tuples, root)
-        tuples.insert(index, root)
-    return tuples[0]
+        # insert the node back into the heap
+        heapq.heappush(nodes, node)
+    return nodes[0]
 
 
 def tree_to_code_map(root):

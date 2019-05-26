@@ -1,5 +1,65 @@
 import sys
 import bisect
+import heapq
+
+
+def huffman_encoding(data):
+    '''
+    Encode the data into a string of 0/1 characters, suitable for compaction
+    into an int or byte array.
+
+    data: the string to be encoded
+
+    Returns: a tuple of the encoded data string and the tree used to decode
+    '''
+    root = build_huffman_tree(data)
+    encoded = encode_with_tree(data, root)
+    return encoded, root
+
+
+def huffman_decoding(data, tree):
+    '''
+    Decode data using the Huffman tree.
+
+    Resturns: a string containing the decoded data
+    '''
+    chars = []
+    # start at the top of the tree and move once for each encoded character
+    node = tree
+    for char in data:
+        # 0 indicates the character is to the left, 1 to the right
+        if char == '0':
+            node = node.left
+        else:
+            node = node.right
+        if node.char:
+            # when we get to a leaf node we have decoded one character
+            # save it and reset to the root of the tree
+            chars.append(node.char)
+            node = tree
+    return ''.join(chars)
+
+
+def build_huffman_tree(data):
+    '''
+    Build a tree that can be used to encode and decode a string using Huffman
+    coding.
+
+    Returns: the HuffNode object at the root of the tree
+    '''
+    frequency_map = get_character_frequency(data)
+    return build_tree(frequency_map)
+
+
+def encode_with_tree(data, root):
+    '''
+    Encode the input data with the Huffman tree (root)
+
+    Returns: the data encoded as a string of 0/1 characters
+    '''
+    code_map = tree_to_code_map(root)
+    return encode_string(a_great_sentence, code_map)
+
 
 def get_character_frequency(s):
     '''
@@ -14,17 +74,6 @@ def get_character_frequency(s):
         count = result.get(c, 0)
         result[c] = count + 1
     return result
-
-
-def frequency_to_tuples(frequencies):
-    '''
-    Build and sort a list of tuples from lowest to highest frequencies.
-
-    Returns:
-        an ordered list of tuples (frequence, character)
-    '''
-    result = [HuffNode(value, key) for key, value in frequencies.items()]
-    return sorted(result)
 
 
 class HuffNode:
@@ -58,12 +107,13 @@ class HuffNode:
         return f'Node({self.count},{self.char})'
 
 
-def tuples_to_tree(tuples):
+def build_tree(frequency_map):
     '''
     Build the Huffman Tree by assigning a binary code to each letter, using
     codes for the more frequent letters. (This is the heart of the
     algorithm.)
     '''
+    tuples = sorted([HuffNode(value, key) for key, value in frequency_map.items()])
 
     while (len(tuples) > 1):
         # pull two nodes off the front of the list
@@ -101,53 +151,24 @@ def tree_to_code_map(root):
 
 
 def encode_string(s, code_map):
-    result = ''
+    chars = []
     for char in s:
-        result += code_map[char]
-    return result
-
-
-def decode_string(encoded, tree):
-    result = ''
-    node = tree
-    for char in encoded:
-        if char == '0':
-            node = node.left
-        else:
-            node = node.right
-        if node.char:
-            result += node.char
-            node = tree
-    return result
-
+        chars.append(code_map[char])
+    return ''.join(chars)
 
 
 if __name__ == '__main__':
-    # a_great_sentence = "The bird is the word"
-    a_great_sentence = "aaaaaaaaaaaaabc"
-    frequencies = get_character_frequency(a_great_sentence)
-    tuples = frequency_to_tuples(frequencies)
-    print(tuples)
+    a_great_sentence = "The bird is the word"
 
-    print()
-    root = tuples_to_tree(tuples)
-    code_map = tree_to_code_map(root)
-    print(code_map)
+    print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
+    print ("The content of the data is: {}\n".format(a_great_sentence))
 
-    encoded = encode_string(a_great_sentence, code_map)
-    print(encoded)
-    decoded = decode_string(encoded, root)
-    print(decoded)
+    encoded_data, tree = huffman_encoding(a_great_sentence)
 
+    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+    print ("The content of the encoded data is: {}\n".format(encoded_data))
 
-# Build the Huffman Tree by assigning a binary code to each letter, using
-# codes for the more frequent letters. (This is the heart of the
-# algorithm.)
+    decoded_data = huffman_decoding(encoded_data, tree)
 
-# Trim the Huffman Tree (remove the frequencies from the previously built tree).
-
-# Encode the text into its compressed form.
-
-# Decode the text from its compressed form.
-
-# You then will need to create encoding, decoding, and sizing schemas.
+    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    print ("The content of the encoded data is: {}\n".format(decoded_data))

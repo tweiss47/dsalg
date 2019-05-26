@@ -45,6 +45,7 @@ def huffman_encoding(data):
 
     Returns: a tuple of the encoded data string and the tree used to decode
     '''
+    if len(data) == 0: return None, None
     root = build_huffman_tree(data)
     encoded = encode_with_tree(data, root)
     return encoded, root
@@ -90,6 +91,12 @@ def build_huffman_tree(data):
     nodes = []
     for key, value in frequency_map.items():
         heapq.heappush(nodes, HuffNode(value, key))
+
+    # Special case when the tree has only one type of character
+    if len(nodes) == 1:
+        root = HuffNode(nodes[0].count)
+        root.left = nodes[0]
+        return root
 
     # Build the tree by combining nodes with the smallest count values
     while (len(nodes) > 1):
@@ -138,17 +145,75 @@ def encode_with_tree(data, root):
 
 
 if __name__ == '__main__':
-    a_great_sentence = "The bird is the word"
+    def is_valid_encoding(encoding):
+        if not encoding or len(encoding) == 0:
+            return False
+        for char in encoding:
+            if not (char == '0' or char == '1'):
+                return False
+        return True
 
-    print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
-    print ("The content of the data is: {}\n".format(a_great_sentence))
+    def data_was_compressed(data, encoded):
+        size_encoded = sys.getsizeof(int(encoded, base=2))
+        size_original = sys.getsizeof(data)
+        return size_encoded < size_original
 
-    encoded_data, tree = huffman_encoding(a_great_sentence)
+    print("Testing Huffman encoding")
 
-    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
-    print ("The content of the encoded data is: {}\n".format(encoded_data))
+    # Test some nominal cases
+    nominal_cases = [
+        "Udacity is udacious",
+        "Well, everybody's heard about the bird. Bird, bird, bird",
+        "The bird is the word"
+    ]
+    for data in nominal_cases:
+        encoded, tree = huffman_encoding(data)
+        assert len(encoded) > 0
+        assert is_valid_encoding(encoded)
+        decoded = huffman_decoding(encoded, tree)
+        assert data == decoded
+        assert data_was_compressed(data, encoded)
+        # print(data, ":", encoded)
 
-    decoded_data = huffman_decoding(encoded_data, tree)
+    # Corner cases
+    data = ""
+    encode, tree = huffman_encoding(data)
+    assert encode is None
+    assert tree is None
 
-    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
-    print ("The content of the encoded data is: {}\n".format(decoded_data))
+    data = "a"
+    encode, tree = huffman_encoding(data)
+    assert encode == "0"
+    decoded = huffman_decoding(encode, tree)
+    assert decoded == data
+
+    data = "aaa"
+    encode, tree = huffman_encoding(data)
+    assert encode == "000"
+    decoded = huffman_decoding(encode, tree)
+    assert decoded == data
+
+    data = "baa"
+    encode, tree = huffman_encoding(data)
+    assert encode == "011"
+    decoded = huffman_decoding(encode, tree)
+    assert decoded == data
+
+    print("All tests passed!")
+
+    # demonstration from the problem description
+    def demo(sentence):
+        print ("The size of the data is: {}\n".format(sys.getsizeof(sentence)))
+        print ("The content of the data is: {}\n".format(sentence))
+
+        encoded_data, tree = huffman_encoding(sentence)
+
+        print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+        print ("The content of the encoded data is: {}\n".format(encoded_data))
+
+        decoded_data = huffman_decoding(encoded_data, tree)
+
+        print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+        print ("The content of the encoded data is: {}\n".format(decoded_data))
+
+    # demo("The bird is the word")

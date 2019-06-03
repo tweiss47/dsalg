@@ -19,3 +19,11 @@ An efficient implemtnation could to use a set to store the data where the
 membership test is occuring. Using the intersection and union operations of
 the set directly though doesn't seem like the best option since all the data
 need to be moved in and out of sets to return the linked list structure.
+
+The space requirements for the list are similar to a minimal singly linked
+list, with two extra fields for a tail pointer and element count. Each set
+operation requires the use of a temporary set for fast membership checking
+and duplicate elimination. Union adds all elements to a single set and
+intersection uses two sets, but all m + n elements are added in both cases.
+This will require additional temporary storage proportional to the total
+number of input elements.

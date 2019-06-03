@@ -36,3 +36,11 @@ the capacity is exceeded, removing elements from the tail of the list until
 the list is under capacity. Removing items from the tail of the list will be
 O(1) so unless the capacity is reduced we would expect this to be a constant
 time operation as well.
+
+For each cache entry we are maintaining a `DNode` which requires forward and
+back pointers as well as storing the key for entry in the index. This is
+additional overhead per entry. In addition the dictionary will require space
+proportional to the capacity of the cache. It is possible to reduce the
+storage requirements of the cache by lowering the capacity value, but this
+would only reduce the number of active elements in storage and wouldn't
+impact th space required for the index.

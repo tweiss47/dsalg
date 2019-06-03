@@ -8,6 +8,10 @@ data.
 
 Otherwise the user of the BlockChain class calls `record()` to create a new
 data record. Adding records is a constant time operation on the size of the
-chain, but will depend on the amount of data stored in the `Block`. Checking
-the validity of the chain requires traversing the chain: O(n) where n is the
-number of blocks and recomputing hashes for each block.
+chain, but will depend on the amount of data stored in the `Block`.
+
+Checking the validity of the chain requires traversing the chain: O(n) where
+n is the number of blocks and recomputing hashes for each block.
+
+Space overhead for the list is minimal, consisting of a reference field for
+each block and a head pointer within the chain itself.

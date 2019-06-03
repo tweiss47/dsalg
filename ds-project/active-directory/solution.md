@@ -21,3 +21,8 @@ lookup could be done in constant time and the runtime would then only depend
 on the number of groups encountered. I used a `set` to store the user names
 since only the names are stored in this example.
 
+There may be a small storage overhead introduced by switching from a list to
+a set. Lists will allocate additional space for expansion while extra hash
+buckets are required for a set. Both will be proportional to the number of
+group memberships stored. At runtime, using recursion will require stack space
+proportional to the depth of the group containment tree.

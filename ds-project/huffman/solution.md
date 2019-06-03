@@ -34,3 +34,13 @@ encoded by traversing the input and doing one O(1) lookup per character.
 The decoding logic in `huffman_decoding()` is a step by step traversal of the
 tree, one move for each bit in the encoded data. So the runtime would be O(n)
 where n is the length of the encoded data.
+
+During tree building a `dict` of character frequencies is created which will
+require space proportional to the number of distinct characters in the input.
+Each dictionary entry is then stored in a `list` which is used to store the
+HuffNode heap. Again this will be proportial to the number of unique
+characters. Additional storage in the tree is required for intermediate (non
+leaf) nodes. The tree could be compacted by eliminating the count field but
+this seems like a marginal improvement. No attempt was made to serialze the
+tree as described in the [Huffman Tutorial](https://www.siggraph.org/education/materials/HyperGraph/video/mpeg/mpegfaq/huffman_tutorial.html).
+

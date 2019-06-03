@@ -10,3 +10,5 @@ encountered results in another recursive call and another `os.listdir()`
 call, the runtime likely depends almost completely on the number of
 directores encountered.
 
+A recursive traversal will require call stack space proportional to the
+degree of directory nesting from the parent path.

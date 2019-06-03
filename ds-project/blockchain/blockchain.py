@@ -1,3 +1,6 @@
+# Implement a simple block chain to store data records
+
+
 import hashlib
 import datetime
 

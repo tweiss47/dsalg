@@ -1,3 +1,6 @@
+# Implement Huffman encoding and decoding for text input
+
+
 import sys
 import heapq
 

@@ -1,3 +1,6 @@
+# Search a file path for files matching a pattern
+
+
 import os
 
 

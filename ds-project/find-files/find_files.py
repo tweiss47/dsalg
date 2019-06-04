@@ -27,6 +27,9 @@ def find_files(suffix, path):
     if not os.path.exists(path):
         return listing
 
+    # Clean the path to avoid funky mixed delimiter
+    path = os.path.normpath(path)
+
     # Recursively traverse the directory and all subdirectories
     def traverse(dir, pattern):
         children = os.listdir(dir)
@@ -67,16 +70,22 @@ if __name__ == '__main__':
     # the repo!
 
     # look for paths that exist in the test directory
-    test_find('.c', '.\\testdir', ['t1.c', 'a.c', 'b.c', 'a.c'])
-    test_find('.h', '.\\testdir', ['t1.h', 'a.h', 'b.h', 'a.h'])
-    test_find('.gitkeep', '.\\testdir', ['.gitkeep', '.gitkeep'])
+    test_find('.c', './testdir', ['t1.c', 'a.c', 'b.c', 'a.c'])
+    test_find('.h', './testdir', ['t1.h', 'a.h', 'b.h', 'a.h'])
+    test_find('.gitkeep', './testdir', ['.gitkeep', '.gitkeep'])
+
+    # The test function above is only validating that the file name part is
+    # found, to avoid os dependencies. From this you can see that the full
+    # path is returned
+    listing = find_files(".c", "./testdir")
+    print(listing)
 
     # look for an invalid suffix
-    test_find('.bogus', '.\\testdir', [])
+    test_find('.bogus', './testdir', [])
 
     # look for suffixes that are only on directories
-    test_find('subdir1', '.\\testdir', [])
-    test_find('1', '.\\testdir', [])
+    test_find('subdir1', './testdir', [])
+    test_find('1', './testdir', [])
 
     # This should find something - at least this script itself
     listing = find_files('.py', '..')

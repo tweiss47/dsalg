@@ -13,5 +13,6 @@ runtime behavior
 | Problem | Directory | Solution Files |
 |--------|------------| ---------------|
 | Square Root of an Integer | square-root | square-root.py |
+| Search in a Rotated Sorted Array | rotated | rotated.py |
 
 All solutions will run their test code when run as `__main__`.

@@ -12,6 +12,6 @@ runtime behavior
 
 | Problem | Directory | Solution Files |
 |--------|------------| ---------------|
-| | | |
+| Square Root of an Integer | square-root | square-root.py |
 
 All solutions will run their test code when run as `__main__`.

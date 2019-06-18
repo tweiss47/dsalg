@@ -14,5 +14,6 @@ runtime behavior
 |--------|------------| ---------------|
 | Square Root of an Integer | square-root | square-root.py |
 | Search in a Rotated Sorted Array | rotated | rotated.py |
+| Rearrange array elements | rearrange | rearrange.py |
 
 All solutions will run their test code when run as `__main__`.

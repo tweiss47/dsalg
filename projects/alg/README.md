@@ -16,5 +16,6 @@ runtime behavior
 | Search in a Rotated Sorted Array | rotated | rotated.py |
 | Rearrange array elements | rearrange | rearrange.py |
 | Dutch National Flag Problem | dutch | dutch.py |
+| Max and Min in an unsorted array | unsorted | unsorted.py |
 
 All solutions will run their test code when run as `__main__`.

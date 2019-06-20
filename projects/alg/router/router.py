@@ -97,6 +97,10 @@ if __name__ == "__main__":
     # an empty path is okay
     assert "root handler" == router.lookup("")
 
+    # updating the root handler is allowed
+    router.add_handler("/", "new root handler")
+    assert "new root handler" == router.lookup("/")
+
     # but don't respond to using a relative path
     try:
         handler = router.lookup("home/about")

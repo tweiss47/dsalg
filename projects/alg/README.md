@@ -1,7 +1,5 @@
 # Problems vs. Algorithms
 
-This is a collection of seven projects based on the algorithms lessons. Ea
-
 This is a group of 7 problems based on the algorithms lessons. Each problem
 directory contains:
 

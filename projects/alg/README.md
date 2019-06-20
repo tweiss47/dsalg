@@ -18,5 +18,6 @@ runtime behavior
 | Dutch National Flag Problem | dutch | dutch.py |
 | Autocomplete with Tries | autocomplete | Trie.ipynb |
 | Max and Min in an unsorted array | unsorted | unsorted.py |
+| HTTP router using a Trie | router | router.py |
 
 All solutions will run their test code when run as `__main__`.

@@ -1,12 +1,86 @@
 # implement route planner
 
+# A* search performs like a uniform cost search but works to minimize a
+# function that considers both the shortest path lenght and a heuristic
+# function which estimates the remaining cost to goal
 
-def shortest_path(M,start,goal):
-    print("shortest path called")
-    return
+
+import math
+import heapq
+
+
+def distance(M, a, b):
+    """
+    Compute the strait line distance between two intersections a and b
+
+    M is the map
+    """
+    a = M.intersections[a]
+    b = M.intersections[b]
+    return math.sqrt(math.pow(a[0] - b[0], 2) + math.pow(a[1] - b[1], 2))
+
+
+class Path():
+    """
+    Class to keep track of a path between nodes
+    """
+    def __init__(self):
+        self.nodes = []
+        self.length = 0.0
+
+    def extend(self, M, node):
+        """
+        Return a clone of the path extended to the new node
+
+        node is the id of the node
+        M is the map
+        """
+        output = Path()
+        if len(self.nodes) > 0:
+            last = self.nodes[-1]
+            output.length = self.length + distance(M, last, node)
+        output.nodes = self.nodes[:]
+        output.nodes.append(node)
+        return output
+
+
+def shortest_path(M, start, goal):
+    """
+    Return the shortest path in the map M from start to goal
+    """
+    # start by pushing the start onto the frontier
+    frontier = [(distance(M, start, goal), Path().extend(M, start))]
+    explored = set()
+
+    # while there are nodes in the frontier
+    while len(frontier) > 0:
+        # pull the lowest cost node off
+        _, path = heapq.heappop(frontier)
+
+        # if it is the destination, we're done
+        last = path.nodes[-1]
+        if last == goal:
+            return path.nodes
+
+        # mark as explored
+        explored.add(last)
+
+        # for each path connected to the node
+        for node in M.roads[last]:
+            # compute its cost
+            next = path.extend(M, node)
+            cost = path.length + distance(M, node, goal)
+
+            # push it onto the frontier
+            if node not in explored:
+                heapq.heappush(frontier, (cost, next))
+
+    # no path found
+    return []
 
 
 if __name__ == "__main__":
+    # Mock up the map_40 so we can test this module outside the notebook
     intersections = {
         0: [0.7801603911549438, 0.49474860768712914],
         1: [0.5249831588690298, 0.14953665513987202],
@@ -92,8 +166,31 @@ if __name__ == "__main__":
         [2, 4, 7, 22, 28, 36]
     ]
 
+    # Run the test case from the notebook
     from collections import namedtuple
     Graph = namedtuple("Graph", ["intersections", "roads"])
     map_40 = Graph(intersections, roads)
     path = shortest_path(map_40, 5, 34)
-    print(path)
+    print("Path from 5 to 34:", path)
+    assert path == [5, 16, 37, 12, 34]
+
+    # test distance
+    assert distance(map_40, 0, 0) == 0.0
+    assert math.isclose(distance(map_40, 0, 1), 0.42928628216912434, rel_tol=1e-6)
+
+    # test Path
+    p = Path()
+    assert p.nodes == []
+    assert p.length == 0.0
+
+    p = p.extend(map_40, 0)
+    assert p.nodes == [0]
+    assert p.length == 0.0
+
+    # Path doesn't actually check that this is a legal path between nodes
+    p = p.extend(map_40, 1)
+    assert p.nodes == [0, 1]
+    assert math.isclose(p.length, 0.42928628216912434, rel_tol=1e-6)
+
+    print("All tests pass!")
+
